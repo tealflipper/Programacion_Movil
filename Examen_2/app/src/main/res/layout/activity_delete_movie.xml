@@ -16,7 +16,7 @@
         android:layout_marginBottom="46dp"
         android:text="Id de la pelicula a eliminar"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/movieId"
+        app:layout_constraintBottom_toTopOf="@+id/pass0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -33,25 +33,36 @@
         android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/movieId"
+        app:layout_constraintEnd_toStartOf="@+id/pass0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView9"
         app:layout_constraintVertical_bias="0.0" />
 
-    <EditText
-        android:id="@+id/movieId"
-        android:layout_width="wrap_content"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/pass0"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
-        android:layout_marginEnd="82dp"
-        android:layout_marginBottom="326dp"
-        android:contentDescription="Id de la pelicula"
-        android:ems="10"
-        android:hint="Id de la pelicula"
-        android:inputType="textPersonName"
+        android:layout_marginStart="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="30dp"
+        android:hint="ID"
+        app:counterEnabled="true"
+        app:counterMaxLength="12"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView10"
-        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+        app:layout_constraintTop_toBottomOf="@+id/textView9"
+
+        >
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/movieId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:digits="1234567890"
+            android:inputType="number"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
 
     <Button
         android:id="@+id/delete"
@@ -64,7 +75,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/returnMain"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/movieId" />
+        app:layout_constraintTop_toBottomOf="@+id/pass0" />
 
     <Button
         android:id="@+id/returnMain"
@@ -77,7 +88,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/delete"
-        app:layout_constraintTop_toBottomOf="@+id/movieId"
+        app:layout_constraintTop_toBottomOf="@+id/pass0"
         app:layout_constraintVertical_bias="0.498" />
 
     <TextView
@@ -91,5 +102,5 @@
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/movieId" />
+        app:layout_constraintTop_toBottomOf="@+id/pass0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

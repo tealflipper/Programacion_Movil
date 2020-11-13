@@ -60,34 +60,6 @@ public class Tools {
         return movieList;
     }
 
-    /*
-    * Converts ArrayList <Movie> to JSON array
-    * */
-    public static JSONArray arrayListToJSONArray(ArrayList<Movie> movieList) throws JSONException {
-        String str = "[ ";
-        for(Movie m:movieList){
-            JSONObject jsonMovie = new JSONObject();
-            try {
-                jsonMovie.put("id", m.getId());
-                jsonMovie.put("title", m.getTitle().toString());
-                jsonMovie.put("genre", m.getGenres().toString());
-                jsonMovie.put("length", m.getLength());
-                jsonMovie.put("director", m.getDirector().toString());
-                jsonMovie.put("year", m.getYear());
-                jsonMovie.put("price", m.getPrice());
-            } catch (JSONException e){
-                e.printStackTrace();
-            }
-            String stringMovie = jsonMovie.toString();
-            str+= stringMovie;
-            if (m.getId()!= movieList.get(movieList.size()-1).getId()){
-                str+=",";
-            }
-        }
-        str+="]";
-        JSONArray myJsonArray = new JSONArray(str);
-        return myJsonArray;
-    }
 
     /*
     * Converts ArrayList to String for printing out
@@ -136,7 +108,7 @@ public class Tools {
     }
 
     /*
-    * Reads JSON format from
+    * Reads JSON format from local file
     * */
     public static JSONArray readJSONFile(File movieFile) throws IOException, JSONException {
 

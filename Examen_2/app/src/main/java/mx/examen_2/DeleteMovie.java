@@ -69,7 +69,7 @@ public class DeleteMovie extends AppCompatActivity {
         }
         if(movieToDelete!=null){
             movieList.remove(movieToDelete);
-            result.setText("Elemento" +id+" eliminado");
+            result.setText("Elemento " +id+" eliminado");
         }
         else{
             result.setText("Elemento no encontrado");

@@ -1,4 +1,4 @@
-package mx.examen3;
+package mx.examen_2;
 
 import android.content.ContentValues;
 import android.content.Context;

@@ -12,7 +12,6 @@ import androidx.core.content.ContextCompat;
 import com.google.android.gms.common.util.IOUtils;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -20,7 +19,6 @@ import com.google.firebase.storage.StorageReference;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Document;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -43,7 +41,7 @@ import static androidx.core.content.ContextCompat.getSystemService;
 
 public class Tools {
     private static String jsonFile = "https://tepitoflix.000webhostapp.com/movieJson3.json";
-    private static String images = "https://librojson.000webhostapp.com/imagenes/";
+    public static String imagesURL = "https://librojson.000webhostapp.com/imagenes/";
     private static String jsonString;
     public Tools(){
     }
@@ -67,7 +65,7 @@ public class Tools {
             movie.setDirector(curObj.getString("director"));
             movie.setYear(curObj.getInt("year"));
             movie.setPrice(curObj.getDouble("price"));
-            movie.setImage(curObj.getString("image"));
+            movie.setImageFile(curObj.getString("image"));
 
 
             movieList.add(movie);
@@ -85,9 +83,7 @@ public class Tools {
         ArrayList moviesStringList= new ArrayList<String>();
         int i = 1;
         for (Movie movie : movieArrayList){
-            String moviesString = "" + i + movie.toString();
-            i++;
-            moviesStringList.add(moviesString);
+            moviesStringList.add(""+(i++)+movie.toString());
         }
         return moviesStringList;
     }
@@ -111,7 +107,7 @@ public class Tools {
                 jsonMovie.put("director", m.getDirector().toString());
                 jsonMovie.put("year", m.getYear());
                 jsonMovie.put("price", m.getPrice());
-                jsonMovie.put("image", m.getImage());
+                jsonMovie.put("image", m.getImageFile());
             } catch (JSONException e){
                 e.printStackTrace();
             }
@@ -187,5 +183,32 @@ public class Tools {
         }
         return jsonArray;
     }
+    
+    public static JSONArray downloadJSONArray(File localFile) throws IOException, JSONException{
+
+        // Get a non-default Storage bucket
+        //singleton
+        FirebaseStorage storage = FirebaseStorage.getInstance("gs://tepitoflix.appspot.com");
+
+        //create reference to file
+        StorageReference storageRef = storage.getReference();
+        StorageReference jsonFileRef = storageRef.child("moviejson3.json");
+
+        jsonFileRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                // Local temp file has been created
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });
+
+        JSONArray jsonArray = readJSONFile(localFile);
+        return jsonArray;
+    }
 
 }
+

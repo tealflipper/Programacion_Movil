@@ -4,25 +4,26 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.LruCache;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class ViewMovieList extends AppCompatActivity {
     MovieDBAdapter movieDBAdapter;
+    private LruCache<Integer, Bitmap> memoryCache;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +43,8 @@ public class ViewMovieList extends AppCompatActivity {
 
 
 
+
+
     public void printMovieList() throws JSONException,IOException{
         /*
         File localFile = new File(ContextCompat.getExternalFilesDirs(this,
@@ -51,13 +54,31 @@ public class ViewMovieList extends AppCompatActivity {
         ArrayList movies = Tools.ArrayListToStringArray(movieList);
 */
         ArrayList<Movie> movieList = movieDBAdapter.getMovies();
-        ArrayList movies = Tools.ArrayListToStringArray(movieList);
-        ArrayAdapter<String> adapterMovie = new ArrayAdapter<String>(this,
+        ArrayList<MovieSingle> movies = new ArrayList<MovieSingle>();
+        ArrayList<String> movieStrings = Tools.ArrayListToStringArray(movieList);
+
+        for ( int i = 0; i < movieList.size(); i++) {
+            MovieSingle movie=new MovieSingle();
+            movie.movie = movieStrings.get(i);
+
+            File image = new File(ContextCompat.getExternalFilesDirs(getApplicationContext(),
+                    null)[1], movieList.get(i).getImageFile());
+
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(),bmOptions);
+            movie.image = (Bitmap.createScaledBitmap(bitmap,200,150,true));
+            movies.add(movie);
+
+
+        }
+/*
+         */
+        AdapterMovie adapterMovie = new AdapterMovie(this,
                 R.layout.movie_list, movies);
         ListView listViewMovies = (ListView) findViewById(R.id.listview);
         listViewMovies.setAdapter(adapterMovie);
-    }
 
+    }
 
 
     public void returnToMain(){
@@ -77,4 +98,8 @@ public class ViewMovieList extends AppCompatActivity {
             }
         });
     }
+
+
 }
+
+

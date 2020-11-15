@@ -31,6 +31,7 @@ import static androidx.core.content.ContextCompat.getSystemService;
 
 public class Tools {
 
+    public static String imagesURL = "https://librojson.000webhostapp.com/imagenes/";
     static String jsonString;
     public Tools(){
     }

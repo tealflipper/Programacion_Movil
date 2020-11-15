@@ -5,10 +5,8 @@
     android:layout_height="wrap_content"
     android:text="Medium Text"
     android:textStyle="bold"
-    android:textAppearance="?android:attr/textAppearanceMedium"
+    android:textAppearance="?android:attr/textAppearanceListItemSecondary"
     android:layout_marginLeft="10dp"
     android:layout_marginTop="5dp"
     android:padding="2dp"
-    >
-
-</TextView>
+    />

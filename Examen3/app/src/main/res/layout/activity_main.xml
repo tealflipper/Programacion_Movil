@@ -8,44 +8,50 @@ android:orientation="vertical"
 android:paddingTop="50dp"
     >
 
-<TextView android:id="@+id/head"
-    android:layout_width="150dp"
-    android:layout_height="90dp"
-    android:text="TepitoFlix"
-    android:layout_gravity="center"
-    android:textSize="30sp"
-    />
-<TextView android:id="@+id/text1"
-    android:layout_width="150dp"
-    android:layout_height="45dp"
-    android:layout_gravity="center"
-    android:text="Opciones"
-    android:textSize="30sp"
-    />
-<Button android:id="@+id/downloadFile"
-    android:layout_width="200dp"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:text="Descargar Datos"
+    <ImageView android:id="@+id/head"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/tepitoflix"
+        android:layout_gravity="center"
+        android:textSize="30sp"
+        />
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="200dp"
+        android:minHeight="50dp"
+        android:layout_gravity="center"
+        android:max="100"
+        android:indeterminate="false"
+        android:progress="0"
 
-    />
-<Button android:id="@+id/saveFile"
-    android:layout_width="200dp"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:text="Carga archivo"
-    />
+        />
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        />
 
-<Button android:id="@+id/viewMoviesList"
-    android:layout_width="200dp"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:text="visualiza"
-    />
-<Button android:id="@+id/deleteMovie"
-    android:layout_width="200dp"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:text="Elimina"
-    />
+    <Button android:id="@+id/downloadFile"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Descarga"
+
+        />
+    <Button android:id="@+id/viewMoviesList"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="visualiza"
+        />
+    <Button android:id="@+id/updateMovie"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Actualizar"
+        />
 </LinearLayout>

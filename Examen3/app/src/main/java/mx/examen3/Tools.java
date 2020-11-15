@@ -85,7 +85,7 @@ public class Tools {
         ArrayList moviesStringList= new ArrayList<String>();
         int i = 1;
         for (Movie movie : movieArrayList){
-            moviesStringList.add(movie.toString());
+            moviesStringList.add(""+(i++)+movie.toString());
         }
         return moviesStringList;
     }
@@ -186,6 +186,5 @@ public class Tools {
         return jsonArray;
     }
 
-
-
 }
+

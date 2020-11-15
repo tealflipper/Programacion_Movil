@@ -1,84 +1,62 @@
 package mx.examen3;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class ListAdapter extends BaseAdapter {
+import java.util.ArrayList;
 
-    Context context;
-    private final String [] values;
-    private final String [] numbers;
-    private final int [] images;
+public class AdapterMovie extends ArrayAdapter<MovieSingle> {
+    private Context mContext;
+    private ArrayList<MovieSingle> moviesList = new ArrayList();
+    private static LayoutInflater inflater = null;
 
-    public ListAdapter(Context context, String [] values, String [] numbers, int [] images){
-        //super(context, R.layout.single_list_app_item, utilsArrayList);
-        this.context = context;
-        this.values = values;
-        this.numbers = numbers;
-        this.images = images;
+
+    public AdapterMovie(@NonNull Context context, int id , ArrayList<MovieSingle> list) {
+        super(context, id , list);
+        mContext = context;
+        moviesList = list;
     }
 
-    @Override
-    public int getCount() {
-        return values.length;
+
+
+
+    public long getItemId(int position) {
+        return position;
     }
 
-    @Override
-    public Object getItem(int i) {
-        return i;
-    }
+    public static class ViewHolder {
+        public TextView display_name;
+        public TextView display_number;
 
-    @Override
-    public long getItemId(int i) {
-        return i;
     }
-
+    @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        View listItem = convertView;
+        if(listItem == null)
+            listItem = LayoutInflater.from(mContext).inflate(R.layout.movie_image_list,parent,false);
 
+        MovieSingle currentMovie = moviesList.get(position);
 
-        ViewHolder viewHolder;
+        ImageView image = (ImageView)listItem.findViewById(R.id.imageView_poster);
+        image.setImageBitmap(currentMovie.image);
 
-        final View result;
+        TextView name = (TextView) listItem.findViewById(R.id.movie);
+        name.setText(currentMovie.movie);
 
-        if (convertView == null) {
-
-            viewHolder = new ViewHolder();
-            LayoutInflater inflater = LayoutInflater.from(context);
-            convertView = inflater.inflate(R.layout.movie_list, parent, false);
-            //viewHolder.counter = (TextView) convertView.findViewById(R.id.counter);
-            viewHolder.movieInfo = (TextView) convertView.findViewById(R.id.textView);
-            //viewHolder.image = (ImageView) convertView.findViewById(R.id.appIcon);
-
-            result=convertView;
-
-            convertView.setTag(viewHolder);
-        } else {
-            viewHolder = (ViewHolder) convertView.getTag();
-            result=convertView;
-        }
-
-        viewHolder.counter.setText(values[position]);
-        viewHolder.movieInfo.setText(numbers[position]);
-        viewHolder.image.setImageResource(images[position]);
-
-        return convertView;
+        return listItem;
     }
-
-    private static class ViewHolder {
-
-        TextView counter;
-        TextView movieInfo;
-        ImageView image;
-
-    }
-
 }

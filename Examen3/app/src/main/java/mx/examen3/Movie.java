@@ -52,14 +52,13 @@ public class Movie extends Video {
 
     @Override
     public String toString(){
-        return  " \tID: "        + this.id           + "\n" +
+        return  "\n\tID: "        + this.id           + "\n" +
                 " \tTITULO: "    + this.getTitle()   + "\n" +
                 " \tGENERO: "    + this.getGenres()  + "\n" +
                 " \tDURACIÓN: "  + this.getLength()  + "\n" +
                 " \tDIRECTOR: "  + this.getDirector()+ "\n" +
                 " \tAÑO: "       + this.getYear()    + "\n" +
-                " \tPRECIO: "    + this.getPrice()   + "\n" +
-                " \tIMAGEN: "    + this.getImageFile()   + "\n" ;
+                " \tPRECIO: "    + this.getPrice()   + "\n" ;
     }
 }
 

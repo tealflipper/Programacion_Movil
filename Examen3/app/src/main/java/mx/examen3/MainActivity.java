@@ -12,6 +12,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.StrictMode;
 import android.util.LruCache;
 import android.view.View;
@@ -178,6 +179,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
             try {
+
+                publishProgress("Descargando imagenes");
                 int i=0;
                 ArrayList<String> imageFileNames = movieDBAdapter.getMovieImages();
                 for(String imageFileName : imageFileNames){
@@ -186,10 +189,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     // Decode Bitmap
                     Bitmap bitmap  = BitmapFactory.decodeStream(input);
                     addBitmapToMemoryCache(imageFileName,bitmap);
-                    bitmap = null;
+                    File localFile = new File(ContextCompat.getExternalFilesDirs(getApplicationContext(),
+                            null)[1],imageFileName);
+                    FileOutputStream out = new FileOutputStream(localFile);
+                    boolean compress = bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);// bmp is your Bitmap instance
                     publishProgress("Descargando imagen: "+(++i)+"/"+imageFileNames.size(),imageFileName);
-                    Thread.sleep(700);
-
 
                 }
             } catch (Exception e) {
@@ -204,21 +208,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             super.onProgressUpdate(values);
             Bitmap image = null;
             textView.setText(values[0]);
-
+/*
             if(values.length == 2){
                 image = getBitmapFromMemCache(values[1]);
                 File localFile = new File(ContextCompat.getExternalFilesDirs(getApplicationContext(),
                         null)[1],values[1]);
-                try   {
+                try  {
                     FileOutputStream out = new FileOutputStream(localFile);
-                    if (image != null)
-                        image.compress(Bitmap.CompressFormat.PNG, 100, out); // bmp is your Bitmap instance
-                    // PNG is a lossless format, the compression factor (100) is ignored
+                    boolean compress = image.compress(Bitmap.CompressFormat.PNG, 100, out);// bmp is your Bitmap instance
+// PNG is a lossless format, the compression factor (100) is ignored
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
             }
-
+*/
         }
 
         @Override

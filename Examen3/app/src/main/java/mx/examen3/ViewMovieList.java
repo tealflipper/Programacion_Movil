@@ -54,25 +54,26 @@ public class ViewMovieList extends AppCompatActivity {
         ArrayList movies = Tools.ArrayListToStringArray(movieList);
 */
         ArrayList<Movie> movieList = movieDBAdapter.getMovies();
-        ArrayList<String> movies = Tools.ArrayListToStringArray(movieList);
+        ArrayList<MovieSingle> movies = new ArrayList<MovieSingle>();
+        ArrayList<String> movieStrings = Tools.ArrayListToStringArray(movieList);
 
-        for (Movie m : movieList) {
+        for ( int i = 0; i < movieList.size(); i++) {
+            MovieSingle movie=new MovieSingle();
+            movie.movie = movieStrings.get(i);
+
             File image = new File(ContextCompat.getExternalFilesDirs(getApplicationContext(),
-                    null)[1], m.getImageFile());
+                    null)[1], movieList.get(i).getImageFile());
 
             BitmapFactory.Options bmOptions = new BitmapFactory.Options();
             Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(),bmOptions);
-            if(bitmap != null){
-                m.setImage(Bitmap.createScaledBitmap(bitmap,200,150,true));
-            }else{
-                Toast.makeText(this, "error"+m.getImageFile(), Toast.LENGTH_SHORT).show();
-            }
+            movie.image = (Bitmap.createScaledBitmap(bitmap,200,150,true));
+            movies.add(movie);
 
 
         }
 /*
          */
-        ArrayAdapter<String> adapterMovie = new ArrayAdapter<String>(this,
+        AdapterMovie adapterMovie = new AdapterMovie(this,
                 R.layout.movie_list, movies);
         ListView listViewMovies = (ListView) findViewById(R.id.listview);
         listViewMovies.setAdapter(adapterMovie);
@@ -100,4 +101,5 @@ public class ViewMovieList extends AppCompatActivity {
 
 
 }
+
 

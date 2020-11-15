@@ -20,6 +20,9 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -38,9 +41,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     NetworkInfo networkInfo;
     MovieDBAdapter movieDBAdapter;
     Movie movie;
+    private StorageReference mStorageRef;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mStorageRef = FirebaseStorage.getInstance().getReference();
+        Toast.makeText(this, ""+mStorageRef.getPath(), Toast.LENGTH_SHORT).show();
         setContentView(R.layout.activity_main);
         movieDBAdapter = new MovieDBAdapter(this);
         movie = new Movie();

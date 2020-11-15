@@ -1746,7 +1746,6 @@ id decelerate
 id decelerateAndComplete
 id decor_content_parent
 id default_activity_button
-id delete
 id deltaRelative
 id dependency_ordering
 id design_bottom_sheet
@@ -1757,6 +1756,7 @@ id design_navigation_view
 id dialog_button
 id dimensions
 id direct
+id director
 id disableHome
 id disablePostScroll
 id disableScroll
@@ -1789,6 +1789,7 @@ id fixed
 id flip
 id floating
 id forever
+id genre
 id ghost_view
 id ghost_view_holder
 id gone
@@ -1798,6 +1799,7 @@ id group_divider
 id grouping
 id groups
 id head
+id header
 id hideable
 id home
 id homeAsUp
@@ -1820,6 +1822,7 @@ id labeled
 id largeLabel
 id layout
 id left
+id length
 id light
 id line1
 id line3
@@ -1880,7 +1883,6 @@ id parent
 id parentPanel
 id parentRelative
 id parent_matrix
-id pass0
 id password_toggle
 id path
 id pathRelative
@@ -1889,13 +1891,13 @@ id percent
 id pin
 id position
 id postLayout
+id price
 id progressBar
 id progress_circular
 id progress_horizontal
 id radio
 id ratio
 id rectangles
-id result
 id returnMain
 id reverseSawtooth
 id right
@@ -1913,6 +1915,7 @@ id scrollIndicatorDown
 id scrollIndicatorUp
 id scrollView
 id scrollable
+id search
 id search_badge
 id search_bar
 id search_button
@@ -1977,7 +1980,13 @@ id textSpacerNoButtons
 id textSpacerNoTitle
 id textStart
 id textView
-id textView10
+id textView2
+id textView3
+id textView4
+id textView5
+id textView6
+id textView7
+id textView8
 id textView9
 id text_input_end_icon
 id text_input_start_icon
@@ -2017,6 +2026,7 @@ id withText
 id withinBounds
 id wrap
 id wrap_content
+id year
 id zero_corner_chip
 integer abc_config_activityDefaultDur
 integer abc_config_activityShortDur
@@ -2079,8 +2089,8 @@ layout abc_search_dropdown_item_icons_2line
 layout abc_search_view
 layout abc_select_dialog_material
 layout abc_tooltip
-layout activity_delete_movie
 layout activity_main
+layout activity_update_movie
 layout activity_view_movie_list
 layout custom_dialog
 layout design_bottom_navigation_item

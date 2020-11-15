@@ -23,7 +23,7 @@
         android:supportsRtl="true"
         android:testOnly="true"
         android:theme="@style/AppTheme" >
-        <activity android:name="mx.examen_3.DeleteMovie" />
+        <activity android:name="mx.examen_3.UpdateMovie" />
         <activity android:name="mx.examen_3.ViewMovieList" />
         <activity android:name="mx.examen_3.MainActivity" >
             <intent-filter>

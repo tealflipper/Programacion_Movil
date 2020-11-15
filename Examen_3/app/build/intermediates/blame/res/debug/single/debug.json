@@ -40,6 +40,10 @@
         "source": "/home/arturo/AndroidStudioProjects/Examen_3/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.png"
     },
     {
+        "merged": "/home/arturo/AndroidStudioProjects/Examen_3/app/build/intermediates/res/merged/debug/layout_activity_update_movie.xml.flat",
+        "source": "/home/arturo/AndroidStudioProjects/Examen_3/app/src/main/res/layout/activity_update_movie.xml"
+    },
+    {
         "merged": "/home/arturo/AndroidStudioProjects/Examen_3/app/build/intermediates/res/merged/debug/mipmap-mdpi_ic_launcher.png.flat",
         "source": "/home/arturo/AndroidStudioProjects/Examen_3/app/src/main/res/mipmap-mdpi/ic_launcher.png"
     },
@@ -58,10 +62,6 @@
     {
         "merged": "/home/arturo/AndroidStudioProjects/Examen_3/app/build/intermediates/res/merged/debug/mipmap-hdpi_ic_launcher.png.flat",
         "source": "/home/arturo/AndroidStudioProjects/Examen_3/app/src/main/res/mipmap-hdpi/ic_launcher.png"
-    },
-    {
-        "merged": "/home/arturo/AndroidStudioProjects/Examen_3/app/build/intermediates/res/merged/debug/layout_activity_delete_movie.xml.flat",
-        "source": "/home/arturo/AndroidStudioProjects/Examen_3/app/src/main/res/layout/activity_delete_movie.xml"
     },
     {
         "merged": "/home/arturo/AndroidStudioProjects/Examen_3/app/build/intermediates/res/merged/debug/drawable_tepitoflix.png.flat",

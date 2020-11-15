@@ -39,7 +39,7 @@
 24        android:testOnly="true"
 25        android:theme="@style/AppTheme" >
 25-->/home/arturo/AndroidStudioProjects/Examen_3/app/src/main/AndroidManifest.xml:13:9-40
-26        <activity android:name="mx.examen_3.DeleteMovie" />
+26        <activity android:name="mx.examen_3.UpdateMovie" />
 26-->/home/arturo/AndroidStudioProjects/Examen_3/app/src/main/AndroidManifest.xml:14:9-58
 26-->/home/arturo/AndroidStudioProjects/Examen_3/app/src/main/AndroidManifest.xml:14:19-46
 27        <activity android:name="mx.examen_3.ViewMovieList" />

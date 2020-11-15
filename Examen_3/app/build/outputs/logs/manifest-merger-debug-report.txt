@@ -113,7 +113,7 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/artur
 		ADDED from /home/arturo/AndroidStudioProjects/Examen_3/app/src/main/AndroidManifest.xml:8:9-35
 	android:theme
 		ADDED from /home/arturo/AndroidStudioProjects/Examen_3/app/src/main/AndroidManifest.xml:13:9-40
-activity#mx.examen_3.DeleteMovie
+activity#mx.examen_3.UpdateMovie
 ADDED from /home/arturo/AndroidStudioProjects/Examen_3/app/src/main/AndroidManifest.xml:14:9-58
 	android:name
 		ADDED from /home/arturo/AndroidStudioProjects/Examen_3/app/src/main/AndroidManifest.xml:14:19-46

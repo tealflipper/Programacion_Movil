@@ -1,4 +1,4 @@
-#Sun Nov 15 11:07:46 CST 2020
+#Sun Nov 15 12:51:08 CST 2020
 base.0=/home/arturo/AndroidStudioProjects/Examen_3/app/build/intermediates/dex/debug/mergeExtDexDebug/classes.dex
 path.1=classes.dex
 renamed.1=classes2.dex

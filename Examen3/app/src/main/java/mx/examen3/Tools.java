@@ -43,7 +43,7 @@ import static androidx.core.content.ContextCompat.getSystemService;
 
 public class Tools {
     private static String jsonFile = "https://tepitoflix.000webhostapp.com/movieJson3.json";
-    private static String images = "https://librojson.000webhostapp.com/imagenes/";
+    public static String imagesURL = "https://librojson.000webhostapp.com/imagenes/";
     private static String jsonString;
     public Tools(){
     }

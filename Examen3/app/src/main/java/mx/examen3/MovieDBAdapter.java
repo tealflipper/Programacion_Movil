@@ -3,6 +3,7 @@ package mx.examen3;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ public class MovieDBAdapter {
         movieDBHelper = new MovieDBHelper(context);
     }
 
-    public long insertMovie(Movie movie) {
+    public long insertMovie(Movie movie) throws SQLException {
 
         SQLiteDatabase sqLiteDatabase = movieDBHelper.getWritableDatabase();
 
@@ -29,7 +30,7 @@ public class MovieDBAdapter {
         contentValues.put(MovieContract.MovieEntry.PRICE, movie.getPrice());// 4 digits 2 decimals
         contentValues.put(MovieContract.MovieEntry.IMAGE, movie.getImage()); //String
 
-        long id= sqLiteDatabase.insert(MovieContract.MovieEntry.TABLE_NAME, null,
+        long id= sqLiteDatabase.insertOrThrow(MovieContract.MovieEntry.TABLE_NAME, null,
                 contentValues);
         return id;
     }
@@ -61,7 +62,24 @@ public class MovieDBAdapter {
             movie.setImage(cursor.getString(cursor.getColumnIndex(MovieEntry.IMAGE)));
             movies.add(movie);
         }
-
+        sqLiteDatabase.close();
         return movies;
     }
+
+    public ArrayList<String> getMovieImages(){
+        SQLiteDatabase sqLiteDatabase = movieDBHelper.getWritableDatabase();
+        String[] columns = {
+                MovieEntry.IMAGE };
+        Cursor cursor = sqLiteDatabase.query(MovieEntry.TABLE_NAME, columns,null,
+                null,null,null,null);
+        ArrayList <String> movieImages = new ArrayList<>();
+
+        while (cursor.moveToNext()){
+            String movieImage =cursor.getString(cursor.getColumnIndex(MovieEntry.IMAGE));
+            movieImages.add(movieImage);
+        }
+        sqLiteDatabase.close();
+        return movieImages;
+    }
+
 }

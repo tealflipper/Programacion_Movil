@@ -17,6 +17,8 @@ third = ["Abroad", "Home Alone", "Alone", "Last Try", "Begins", "Rises", "Homeco
 name = (random.choice(first) + " " + random.choice(second) + " " + random.choice(third))
 
 jsonFile = []
+numbers=[f"{i:03}" for i in range(1,50)]
+
 for i in range (50):
   obj = {
     "id" : 100000000001+i,
@@ -26,7 +28,8 @@ for i in range (50):
     "director" : random.choice(names)+ " " +random.choice(lastNames),
     "year" : int( random.uniform(1980.0,2020.0) ),
     "price" : round(random.uniform(19.99, 999.99),2),
-    "imagen" : "AABB00"+str((i+1 if i<49 else 52))+".jpg"
+    "image" : "AABB"+((numbers[i] if i<49 else "052"))+".jpg"
   }
   jsonFile.append(obj)
 print(json.dumps(jsonFile,indent=4))
+

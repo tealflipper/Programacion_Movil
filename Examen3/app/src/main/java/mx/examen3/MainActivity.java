@@ -21,6 +21,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.storage.StorageReference;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -45,9 +47,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     NetworkInfo networkInfo;
     MovieDBAdapter movieDBAdapter;
     Movie movie;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         // Get max available VM memory, exceeding this amount will throw an
         // OutOfMemory exception. Stored in kilobytes as LruCache takes an
         // int in its constructor.
@@ -98,14 +102,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
 
             case R.id.downloadFile:
-
                 new Download().execute(Tools.imagesURL);
-
-
-
-
-
-
                 /*    */
                     break;
                 case R.id.viewMoviesList:
@@ -154,11 +151,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                JSONArray movieJSON = Tools.downloadJSONArray();
+                File localFile = new File(ContextCompat.getExternalFilesDirs(getApplicationContext(),
+                        null)[1],"movies.json");
+
                 //get file to list of movies
                 try {
+                    JSONArray movieJSON = Tools.downloadJSONArray(localFile);
                     movieList = Tools.jsonArrayToArrayList(movieJSON);
                 } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
 

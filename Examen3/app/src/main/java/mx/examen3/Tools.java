@@ -12,7 +12,6 @@ import androidx.core.content.ContextCompat;
 import com.google.android.gms.common.util.IOUtils;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -20,7 +19,6 @@ import com.google.firebase.storage.StorageReference;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Document;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -183,6 +181,32 @@ public class Tools {
                 conn.disconnect();
             }
         }
+        return jsonArray;
+    }
+    
+    public static JSONArray downloadJSONArray(File localFile) throws IOException, JSONException{
+
+        // Get a non-default Storage bucket
+        //singleton
+        FirebaseStorage storage = FirebaseStorage.getInstance("gs://tepitoflix.appspot.com");
+
+        //create reference to file
+        StorageReference storageRef = storage.getReference();
+        StorageReference jsonFileRef = storageRef.child("moviejson3.json");
+
+        jsonFileRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                // Local temp file has been created
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });
+
+        JSONArray jsonArray = readJSONFile(localFile);
         return jsonArray;
     }
 

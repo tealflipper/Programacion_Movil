@@ -1,4 +1,4 @@
-package mx.examen_2;
+package mx.examen3;
 
 import java.io.Serializable;
 

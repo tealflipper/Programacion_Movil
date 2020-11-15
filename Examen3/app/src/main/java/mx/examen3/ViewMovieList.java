@@ -1,4 +1,4 @@
-package mx.examen_2;
+package mx.examen3;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -22,11 +22,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class ViewMovieList extends AppCompatActivity {
-
+    MovieDBAdapter movieDBAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_movie_list);
+        movieDBAdapter = new MovieDBAdapter(this);
         try {
             printMovieList();
         }catch (JSONException e){
@@ -42,12 +43,15 @@ public class ViewMovieList extends AppCompatActivity {
 
 
     public void printMovieList() throws JSONException,IOException{
+        /*
         File localFile = new File(ContextCompat.getExternalFilesDirs(this,
                 null)[1],"movies.json");
         JSONArray jsonMovies = Tools.readJSONFile(localFile);
         ArrayList<Movie> movieList = Tools.jsonArrayToArrayList(jsonMovies);
         ArrayList movies = Tools.ArrayListToStringArray(movieList);
-
+*/
+        ArrayList<Movie> movieList = movieDBAdapter.getMovies();
+        ArrayList movies = Tools.ArrayListToStringArray(movieList);
         ArrayAdapter<String> adapterMovie = new ArrayAdapter<String>(this,
                 R.layout.movie_list, movies);
         ListView listViewMovies = (ListView) findViewById(R.id.listview);

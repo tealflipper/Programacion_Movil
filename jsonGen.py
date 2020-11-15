@@ -22,7 +22,7 @@ for i in range (50):
     "id" : 100000000001+i,
     "title" : (random.choice(first) + " " + random.choice(second) + " " + random.choice(third)),
     "genre" : random.choice(genres),
-    "lenght" : int( random.uniform(15.0,120.0) ),
+    "length" : int( random.uniform(15.0,120.0) ),
     "director" : random.choice(names)+ " " +random.choice(lastNames),
     "year" : int( random.uniform(1980.0,2020.0) ),
     "price" : round(random.uniform(19.99, 999.99),2),

@@ -1,0 +1,151 @@
+Index: ../Examen_2/app/src/main/java/mx/examen_2/MainActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package mx.examen_2;\n\nimport androidx.annotation.NonNull;\nimport androidx.appcompat.app.AppCompatActivity;\nimport androidx.core.content.ContextCompat;\n\nimport android.app.DownloadManager;\nimport android.content.Context;\nimport android.content.Intent;\nimport android.net.Uri;\nimport android.os.Bundle;\nimport android.os.Environment;\nimport android.view.View;\nimport android.widget.Button;\nimport android.widget.Toast;\n\n\nimport org.json.JSONArray;\nimport org.json.JSONException;\n\nimport java.io.File;\nimport java.io.IOException;\nimport java.util.ArrayList;\n\nimport static androidx.core.content.ContextCompat.getSystemService;\n\npublic class MainActivity extends AppCompatActivity implements View.OnClickListener{\n\n    Button downloadFile, saveFile, viewMoviesList, deleteMovies;\n    ArrayList <Movie> movieList;\n\n    @Override\n    protected void onCreate(Bundle savedInstanceState) {\n        super.onCreate(savedInstanceState);\n        setContentView(R.layout.activity_main);\n        initViewComp();\n\n    }\n\n    public void initViewComp() {\n        downloadFile = (Button) findViewById(R.id.downloadFile);\n        downloadFile.setOnClickListener(this);\n        saveFile = (Button) findViewById(R.id.saveFile);\n        saveFile.setOnClickListener(this);\n        viewMoviesList = (Button) findViewById(R.id.viewMoviesList);\n        viewMoviesList.setOnClickListener(this);\n        deleteMovies = (Button) findViewById(R.id.deleteMovie);\n        deleteMovies.setOnClickListener(this);\n    }\n\n    @Override\n    public void onClick(View v){\n        Intent goToActivity;\n        switch (v.getId()) {\n\n            case R.id.downloadFile:\n                try {\n                    //download file\n                    File localFile = new File(ContextCompat.getExternalFilesDirs(this,\n                            null)[1],\"tmp.json\");\n                    JSONArray movieJSON = Tools.downloadJSONArray(localFile);\n\n                    Toast.makeText(this, \"Archivo descargado\",\n                            Toast.LENGTH_SHORT).show();\n                    //get file to list of movies\n                    movieList = Tools.jsonArrayToArrayList(movieJSON);\n\n                }catch (IOException e){\n                    Toast.makeText(this, \"Error de descarga\",\n                            Toast.LENGTH_SHORT).show();\n                }catch (JSONException e){\n                    Toast.makeText(getApplicationContext(), \"Error en formato JSON\",\n                            Toast.LENGTH_SHORT).show();\n                }\n                break;\n\n            case R.id.saveFile:\n                try {\n                    File localFile = new File(ContextCompat.getExternalFilesDirs(this,\n                            null)[1],\"movies.json\");\n                    Tools.saveJSONFile(localFile, movieList);\n                    Toast.makeText(getApplicationContext(), \"Archivo guardado\",\n                            Toast.LENGTH_SHORT).show();\n                }catch (IOException e){\n                    Toast.makeText(getApplicationContext(), \"Error guardando el archivo\",\n                            Toast.LENGTH_SHORT).show();\n                }\n                break;\n            case R.id.viewMoviesList:\n                goToActivity= new Intent(v.getContext(), ViewMovieList.class);\n                startActivityForResult(goToActivity,1);\n                break;\n            case R.id.deleteMovie:\n                Intent goToActivity2= new Intent(v.getContext(), DeleteMovie.class);\n                startActivityForResult(goToActivity2,2);\n                break;\n            default:\n                break;\n        }\n    }\n\n\n\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- ../Examen_2/app/src/main/java/mx/examen_2/MainActivity.java	(revision c26b952cad0f4396f3232a52872f51d8c3eac3fa)
++++ ../Examen_2/app/src/main/java/mx/examen_2/MainActivity.java	(date 1605456450000)
+@@ -15,6 +15,9 @@
+ import android.widget.Toast;
+ 
+ 
++import com.google.firebase.storage.FirebaseStorage;
++import com.google.firebase.storage.StorageReference;
++
+ import org.json.JSONArray;
+ import org.json.JSONException;
+ 
+@@ -28,13 +31,13 @@
+ 
+     Button downloadFile, saveFile, viewMoviesList, deleteMovies;
+     ArrayList <Movie> movieList;
+-
++    private StorageReference mStorageRef;
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.activity_main);
+         initViewComp();
+-
++        mStorageRef = FirebaseStorage.getInstance().getReference();
+     }
+ 
+     public void initViewComp() {
+Index: app/src/main/java/mx/examen3/MainActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package mx.examen3;\n\nimport androidx.appcompat.app.AppCompatActivity;\nimport androidx.core.content.ContextCompat;\n\nimport android.app.ProgressDialog;\nimport android.content.Context;\nimport android.content.Intent;\nimport android.graphics.Bitmap;\nimport android.graphics.BitmapFactory;\nimport android.net.ConnectivityManager;\nimport android.net.Network;\nimport android.net.NetworkInfo;\nimport android.os.AsyncTask;\nimport android.os.Bundle;\nimport android.os.StrictMode;\nimport android.provider.BaseColumns;\nimport android.view.View;\nimport android.widget.Button;\nimport android.widget.ProgressBar;\nimport android.widget.Toast;\n\nimport org.json.JSONArray;\nimport org.json.JSONException;\n\nimport java.io.File;\nimport java.io.FileOutputStream;\nimport java.io.IOException;\nimport java.io.InputStream;\nimport java.util.ArrayList;\n\npublic class MainActivity extends AppCompatActivity implements View.OnClickListener {\n\n    Button downloadFile, saveFile, viewMoviesList, deleteMovies;\n    ArrayList<Movie> movieList;\n    ProgressDialog mProgressDialog;\n    ConnectivityManager connectivityManager;\n    NetworkInfo networkInfo;\n    MovieDBAdapter movieDBAdapter;\n    Movie movie;\n    @Override\n    protected void onCreate(Bundle savedInstanceState) {\n        super.onCreate(savedInstanceState);\n        setContentView(R.layout.activity_main);\n        movieDBAdapter = new MovieDBAdapter(this);\n        movie = new Movie();\n        initViewComp();\n    }\n\n    public void initViewComp() {\n        downloadFile = (Button) findViewById(R.id.downloadFile);\n        downloadFile.setOnClickListener(this);\n        saveFile = (Button) findViewById(R.id.saveFile);\n        saveFile.setOnClickListener(this);\n        viewMoviesList = (Button) findViewById(R.id.viewMoviesList);\n        viewMoviesList.setOnClickListener(this);\n        deleteMovies = (Button) findViewById(R.id.deleteMovie);\n        deleteMovies.setOnClickListener(this);\n    }\n\n    @Override\n    public void onClick(View v){\n        Intent goToActivity;\n        switch (v.getId()) {\n            case R.id.downloadFile:\n                try {\n                    //TODO create AsyncTask to download and create database\n                    StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitNetwork().build());\n                    connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);\n                    networkInfo = connectivityManager.getActiveNetworkInfo();\n                    if(networkInfo != null && networkInfo.isConnected()) {\n                        Toast.makeText(getApplicationContext(), \"Conexion ok\", Toast.LENGTH_SHORT).show();\n                        //download file\n                        Toast.makeText(this, \"Descargando Archivo \",\n                                Toast.LENGTH_SHORT).show();\n                        JSONArray movieJSON = Tools.downloadJSONArray();\n                        Toast.makeText(this, \"Archivo descargado\",\n                                Toast.LENGTH_SHORT).show();\n                        //get file to list of movies\n                        movieList = Tools.jsonArrayToArrayList(movieJSON);\n                        //create database\n                        for(int i =0; i < movieList.size(); i++){\n                            movieDBAdapter.insertMovie(movieList.get(i));\n                        }\n                        Toast.makeText(getApplicationContext(), \"Base de datos creada\", Toast.LENGTH_SHORT).show();\n                        //TODO download images\n                    }else{\n                        Toast.makeText(getApplicationContext(), \"Error en conexion\", Toast.LENGTH_SHORT).show();\n                    }\n\n                    }catch (JSONException e){\n                        Toast.makeText(getApplicationContext(), \"Error en formato JSON\" + e.toString(),\n                                Toast.LENGTH_SHORT).show();\n                    }\n                    break;\n\n                case R.id.saveFile:\n                    try {\n                        File localFile = new File(ContextCompat.getExternalFilesDirs(this,\n                                null)[1],\"movies.json\");\n                        Tools.saveJSONFile(localFile, movieList);\n                        Toast.makeText(getApplicationContext(), \"Archivo guardado\",\n                                Toast.LENGTH_SHORT).show();\n                    }catch (IOException e){\n                        Toast.makeText(getApplicationContext(), \"Error guardando el archivo\",\n                                Toast.LENGTH_SHORT).show();\n                    }\n                    break;\n                case R.id.viewMoviesList:\n                    goToActivity= new Intent(v.getContext(), ViewMovieList.class);\n                    startActivityForResult(goToActivity,1);\n                    break;\n                case R.id.deleteMovie:\n                    Intent goToActivity2= new Intent(v.getContext(), DeleteMovie.class);\n                    startActivityForResult(goToActivity2,2);\n                    break;\n                default:\n                    break;\n            }\n\n    }\n    private class DownloadImage extends AsyncTask <String, Bitmap, Bitmap> {\n        @Override\n        protected void onPreExecute() {\n            super.onPreExecute();\n            mProgressDialog = new ProgressDialog(MainActivity.this);\n            mProgressDialog.setTitle(\"Download Image Tutorial\");\n            mProgressDialog.setMessage(\"Loading...\");\n            mProgressDialog.setIndeterminate(false);\n            mProgressDialog.show();\n        }\n        @Override\n        protected Bitmap doInBackground(String... URL) {\n            String imageURL = URL[0];\n            Bitmap bitmap = null;\n            try {\n                // Download Image from URL\n                InputStream input = new java.net.URL(imageURL).openStream();\n                // Decode Bitmap\n                bitmap = BitmapFactory.decodeStream(input);\n            } catch (Exception e) {\n                e.printStackTrace();\n            }\n            try (FileOutputStream out = new FileOutputStream(\"AABB001.jpg\")) {\n                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out); // bmp is your Bitmap instance\n                // PNG is a lossless format, the compression factor (100) is ignored\n            } catch (IOException e) {\n                e.printStackTrace();\n            }\n            return bitmap;\n        }\n        @Override\n        protected void onPostExecute(Bitmap result) {\n            // Close progressdialog\n            mProgressDialog.dismiss();\n        }\n    }\n}\n\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/mx/examen3/MainActivity.java	(revision c26b952cad0f4396f3232a52872f51d8c3eac3fa)
++++ app/src/main/java/mx/examen3/MainActivity.java	(date 1605456450000)
+@@ -133,6 +133,33 @@
+         protected Bitmap doInBackground(String... URL) {
+             String imageURL = URL[0];
+             Bitmap bitmap = null;
++
++            File localFile = new File(ContextCompat.getExternalFilesDirs(this,
++                    null)[1],"tmp.json");
++
++            //TODO create AsyncTask to download and create database
++            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitNetwork().build());
++            connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
++            networkInfo = connectivityManager.getActiveNetworkInfo();
++            if(networkInfo != null && networkInfo.isConnected()) {
++                Toast.makeText(getApplicationContext(), "Conexion ok", Toast.LENGTH_SHORT).show();
++                //download file
++                Toast.makeText(this, "Descargando Archivo ",
++                        Toast.LENGTH_SHORT).show();
++                JSONArray movieJSON = Tools.downloadJSONArray();
++                Toast.makeText(this, "Archivo descargado",
++                        Toast.LENGTH_SHORT).show();
++                //get file to list of movies
++                movieList = Tools.jsonArrayToArrayList(movieJSON);
++                //create database
++                for(int i =0; i < movieList.size(); i++){
++                    movieDBAdapter.insertMovie(movieList.get(i));
++                }
++                Toast.makeText(getApplicationContext(), "Base de datos creada", Toast.LENGTH_SHORT).show();
++                //TODO download images
++            }else{
++                Toast.makeText(getApplicationContext(), "Error en conexion", Toast.LENGTH_SHORT).show();
++            }
+             try {
+                 // Download Image from URL
+                 InputStream input = new java.net.URL(imageURL).openStream();
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>apply plugin: 'com.android.application'\n\nandroid {\n    compileSdkVersion 30\n    buildToolsVersion \"30.0.2\"\n\n    defaultConfig {\n        applicationId \"mx.examen3\"\n        minSdkVersion 25\n        targetSdkVersion 30\n        versionCode 1\n        versionName \"1.0\"\n\n        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\n    }\n\n    buildTypes {\n        release {\n            minifyEnabled false\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\n        }\n    }\n}\n\ndependencies {\n    implementation fileTree(dir: \"libs\", include: [\"*.jar\"])\n    implementation 'com.google.firebase:firebase-auth:16.0.5'\n    implementation 'androidx.appcompat:appcompat:1.2.0'\n    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'\n    implementation 'com.google.android.material:material:1.2.1'\n    // Import the BoM for the Firebase platform\n    implementation platform('com.google.firebase:firebase-bom:25.12.0')\n    // Declare the dependency for the Cloud Storage library\n    implementation 'com.google.firebase:firebase-firestore:17.1.2'\n    implementation 'com.google.firebase:firebase-storage:19.1.0'\n    testImplementation 'junit:junit:4.12'\n    androidTestImplementation 'androidx.test.ext:junit:1.1.2'\n    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/build.gradle	(revision c26b952cad0f4396f3232a52872f51d8c3eac3fa)
++++ app/build.gradle	(date 1605456450000)
+@@ -1,4 +1,5 @@
+ apply plugin: 'com.android.application'
++apply plugin: 'com.google.gms.google-services'
+ 
+ android {
+     compileSdkVersion 30
+Index: app/src/main/java/mx/examen3/Tools.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package mx.examen3;\n\nimport android.content.Context;\nimport android.net.ConnectivityManager;\nimport android.os.StrictMode;\nimport android.util.JsonReader;\nimport android.widget.Toast;\n\nimport androidx.annotation.NonNull;\nimport androidx.core.content.ContextCompat;\n\nimport com.google.android.gms.common.util.IOUtils;\nimport com.google.android.gms.tasks.OnFailureListener;\nimport com.google.android.gms.tasks.OnSuccessListener;\nimport com.google.android.gms.tasks.Task;\nimport com.google.firebase.storage.FileDownloadTask;\nimport com.google.firebase.storage.FirebaseStorage;\nimport com.google.firebase.storage.StorageReference;\n\nimport org.json.JSONArray;\nimport org.json.JSONException;\nimport org.json.JSONObject;\nimport org.w3c.dom.Document;\n\nimport java.io.BufferedInputStream;\nimport java.io.BufferedReader;\nimport java.io.BufferedWriter;\nimport java.io.File;\nimport java.io.FileInputStream;\nimport java.io.FileOutputStream;\nimport java.io.FileReader;\nimport java.io.FileWriter;\nimport java.io.IOException;\nimport java.io.InputStream;\nimport java.io.InputStreamReader;\nimport java.io.StringWriter;\nimport java.net.HttpURLConnection;\nimport java.net.URL;\nimport java.nio.charset.StandardCharsets;\nimport java.util.ArrayList;\n\nimport static androidx.core.content.ContextCompat.getSystemService;\n\npublic class Tools {\n    private static String jsonFile = \"https://tepitoflix.000webhostapp.com/movieJson3.json\";\n    private static String images = \"https://librojson.000webhostapp.com/imagenes/\";\n    private static String jsonString;\n    public Tools(){\n    }\n\n\n\n    /*\n    * Converts JSON array to Arraylist <Movie>\n    * */\n    public static ArrayList<Movie> jsonArrayToArrayList(JSONArray jsonArray) throws JSONException {\n        ArrayList<Movie> movieList = new ArrayList<>();\n\n        for(int i = 0; i < jsonArray.length(); i++) {\n            JSONObject curObj= jsonArray.getJSONObject(i);\n            Movie movie = new Movie();\n\n            movie.setId(curObj.getLong(\"id\"));\n            movie.setTitle(curObj.getString(\"title\"));\n            movie.setGenre(curObj.getString(\"genre\"));\n            movie.setLength(curObj.getDouble(\"length\"));\n            movie.setDirector(curObj.getString(\"director\"));\n            movie.setYear(curObj.getInt(\"year\"));\n            movie.setPrice(curObj.getDouble(\"price\"));\n            movie.setImage(curObj.getString(\"image\"));\n\n\n            movieList.add(movie);\n\n        }\n\n        return movieList;\n    }\n\n\n    /*\n    * Converts ArrayList to String for printing out\n    * */\n    public static ArrayList<String> ArrayListToStringArray(ArrayList<Movie> movieArrayList){\n        ArrayList moviesStringList= new ArrayList<String>();\n        int i = 1;\n        for (Movie movie : movieArrayList){\n            String moviesString = \"\" + i + movie.toString();\n            i++;\n            moviesStringList.add(moviesString);\n        }\n        return moviesStringList;\n    }\n\n    /*\n    * Writes contents of ArrayList to file in JSON format\n    * */\n    public static void saveJSONFile(File movieFile, ArrayList<Movie> movieList) throws IOException {\n\n\n        FileWriter fileWriter = new FileWriter(movieFile);\n        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);\n        bufferedWriter.write(\"[ \");\n        for(Movie m:movieList){\n            JSONObject jsonMovie = new JSONObject();\n            try {\n                jsonMovie.put(\"id\", m.getId());\n                jsonMovie.put(\"title\", m.getTitle().toString());\n                jsonMovie.put(\"genre\", m.getGenres().toString());\n                jsonMovie.put(\"length\", m.getLength());\n                jsonMovie.put(\"director\", m.getDirector().toString());\n                jsonMovie.put(\"year\", m.getYear());\n                jsonMovie.put(\"price\", m.getPrice());\n                jsonMovie.put(\"image\", m.getImage());\n            } catch (JSONException e){\n                e.printStackTrace();\n            }\n            String stringMovie = jsonMovie.toString();\n            bufferedWriter.write(stringMovie);\n            if (m.getId()!= movieList.get(movieList.size()-1).getId()){\n                bufferedWriter.write(\",\");\n            }\n\n        }\n        bufferedWriter.write(\"]\");\n        bufferedWriter.close();\n\n    }\n\n    /*\n    * Reads JSON format from local file\n    * */\n    public static JSONArray readJSONFile(File movieFile) throws IOException, JSONException {\n\n        FileReader fileReader = new FileReader(movieFile);\n        BufferedReader bufferedReader = new BufferedReader(fileReader);\n        StringBuilder stringBuilder = new StringBuilder();\n        String line = bufferedReader.readLine();\n        while(line != null){\n            stringBuilder.append(line).append(\"\\n\");\n            line =bufferedReader.readLine();\n        }\n        bufferedReader.close();\n        String stringMovies = stringBuilder.toString();\n        JSONArray jsonMovies = new JSONArray(stringMovies);\n        return jsonMovies;\n    }\n\n    private static JSONArray readJSONFile(InputStream inputStream) throws IOException, JSONException {\n        //creating an InputStreamReader object\n        InputStreamReader isReader = new InputStreamReader(inputStream);\n        //Creating a BufferedReader object\n        BufferedReader reader = new BufferedReader(isReader);\n        StringBuffer sb = new StringBuffer();\n        String str;\n        while((str = reader.readLine())!= null){\n            sb.append(str);\n        }\n        System.out.println(sb.toString());\n        String stringMovies = sb.toString();\n        JSONArray jsonMovies = new JSONArray(stringMovies);\n        return jsonMovies;\n    }\n\n\n    public static JSONArray downloadJSONArray(){\n        HttpURLConnection conn = null;\n        JSONArray jsonArray = new JSONArray();\n\n        try{\n            URL url = new URL(jsonFile);\n            conn = (HttpURLConnection) url.openConnection();\n            conn.setReadTimeout(15000);\n            conn.setConnectTimeout(15000);\n            conn.connect();\n            int responseCode = conn.getResponseCode();\n            if (responseCode == HttpURLConnection.HTTP_OK){\n                jsonArray = readJSONFile(conn.getInputStream());\n            }\n\n        }catch (Exception e){\n            e.printStackTrace();\n        }finally {\n            if(conn != null){\n                conn.disconnect();\n            }\n        }\n        return jsonArray;\n    }\n\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/mx/examen3/Tools.java	(revision c26b952cad0f4396f3232a52872f51d8c3eac3fa)
++++ app/src/main/java/mx/examen3/Tools.java	(date 1605456450000)
+@@ -188,4 +188,30 @@
+         return jsonArray;
+     }
+ 
++    public static JSONArray downloadJSONArray(File localFile) throws IOException, JSONException{
++
++        // Get a non-default Storage bucket
++        //singleton
++        FirebaseStorage storage = FirebaseStorage.getInstance("gs://examen3-562d4.appspot.com");
++
++        //create reference to file
++        StorageReference storageRef = storage.getReference();
++        StorageReference jsonFileRef = storageRef.child("moviesjson.json");
++
++        jsonFileRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
++            @Override
++            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
++                // Local temp file has been created
++            }
++        }).addOnFailureListener(new OnFailureListener() {
++            @Override
++            public void onFailure(@NonNull Exception exception) {
++                // Handle any errors
++            }
++        });
++
++        JSONArray jsonArray = readJSONFile(localFile);
++        return jsonArray;
++    }
++
+ }
+\ No newline at end of file
+Index: build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>// Top-level build file where you can add configuration options common to all sub-projects/modules.\nbuildscript {\n    repositories {\n        google()\n        jcenter()\n    }\n    dependencies {\n        classpath \"com.android.tools.build:gradle:4.0.1\"\n\n        // NOTE: Do not place your application dependencies here; they belong\n        // in the individual module build.gradle files\n    }\n}\n\nallprojects {\n    repositories {\n        google()\n        jcenter()\n    }\n}\n\ntask clean(type: Delete) {\n    delete rootProject.buildDir\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- build.gradle	(revision c26b952cad0f4396f3232a52872f51d8c3eac3fa)
++++ build.gradle	(date 1605456450000)
+@@ -6,6 +6,7 @@
+     }
+     dependencies {
+         classpath "com.android.tools.build:gradle:4.0.1"
++        classpath 'com.google.gms:google-services:4.2.0'
+ 
+         // NOTE: Do not place your application dependencies here; they belong
+         // in the individual module build.gradle files

@@ -28,7 +28,7 @@ public class MovieDBAdapter {
         contentValues.put(MovieContract.MovieEntry.DIRECTOR, movie.getDirector()); //String
         contentValues.put(MovieContract.MovieEntry.YEAR, movie.getYear());//int
         contentValues.put(MovieContract.MovieEntry.PRICE, movie.getPrice());// 4 digits 2 decimals
-        contentValues.put(MovieContract.MovieEntry.IMAGE, movie.getImage()); //String
+        contentValues.put(MovieContract.MovieEntry.IMAGE, movie.getImageFile()); //String
 
         long id= sqLiteDatabase.insertOrThrow(MovieContract.MovieEntry.TABLE_NAME, null,
                 contentValues);
@@ -59,7 +59,7 @@ public class MovieDBAdapter {
             movie.setDirector(cursor.getString(cursor.getColumnIndex(MovieEntry.DIRECTOR)));
             movie.setYear(cursor.getInt(cursor.getColumnIndex(MovieEntry.YEAR)));
             movie.setPrice(cursor.getDouble(cursor.getColumnIndex(MovieEntry.PRICE)));
-            movie.setImage(cursor.getString(cursor.getColumnIndex(MovieEntry.IMAGE)));
+            movie.setImageFile(cursor.getString(cursor.getColumnIndex(MovieEntry.IMAGE)));
             movies.add(movie);
         }
         sqLiteDatabase.close();

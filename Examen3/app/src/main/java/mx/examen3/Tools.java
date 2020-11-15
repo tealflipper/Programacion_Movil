@@ -67,7 +67,7 @@ public class Tools {
             movie.setDirector(curObj.getString("director"));
             movie.setYear(curObj.getInt("year"));
             movie.setPrice(curObj.getDouble("price"));
-            movie.setImage(curObj.getString("image"));
+            movie.setImageFile(curObj.getString("image"));
 
 
             movieList.add(movie);
@@ -85,9 +85,7 @@ public class Tools {
         ArrayList moviesStringList= new ArrayList<String>();
         int i = 1;
         for (Movie movie : movieArrayList){
-            String moviesString = "" + i + movie.toString();
-            i++;
-            moviesStringList.add(moviesString);
+            moviesStringList.add(movie.toString());
         }
         return moviesStringList;
     }
@@ -111,7 +109,7 @@ public class Tools {
                 jsonMovie.put("director", m.getDirector().toString());
                 jsonMovie.put("year", m.getYear());
                 jsonMovie.put("price", m.getPrice());
-                jsonMovie.put("image", m.getImage());
+                jsonMovie.put("image", m.getImageFile());
             } catch (JSONException e){
                 e.printStackTrace();
             }
@@ -187,5 +185,7 @@ public class Tools {
         }
         return jsonArray;
     }
+
+
 
 }

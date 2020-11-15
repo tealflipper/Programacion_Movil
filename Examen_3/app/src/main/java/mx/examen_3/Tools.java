@@ -1,4 +1,4 @@
-package mx.examen3;
+package mx.examen_3;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -188,11 +188,11 @@ public class Tools {
 
         // Get a non-default Storage bucket
         //singleton
-        FirebaseStorage storage = FirebaseStorage.getInstance("gs://examen3-562d4.appspot.com");
+        FirebaseStorage storage = FirebaseStorage.getInstance("gs://tepitoflix.appspot.com");
 
         //create reference to file
         StorageReference storageRef = storage.getReference();
-        StorageReference jsonFileRef = storageRef.child("moviejson3.json");
+        StorageReference jsonFileRef = storageRef.child("movieJson3.json");
 
         jsonFileRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
             @Override
